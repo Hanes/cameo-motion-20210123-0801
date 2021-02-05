@@ -1,0 +1,33 @@
+<html lang="zh-TW">
+<head>
+  <title>app-cameo-run</title>
+  <meta charset="utf-8"/>
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+  />
+  <!--  <link rel="stylesheet" href="../../../scss/style.css"/>-->
+  <link rel="preconnect" href="https://fonts.gstatic.com"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="../js/cameo-chart-run.js"></script>
+</head>
+
+<body>
+<div id="chartdiv"></div>
+<div id="example-table"></div>
+<div class="container">
+  <div class="row pb-5 pt-5">
+    <div class="col-md-8 pt-5 my-auto">
+      <cameo-chart-run
+        data="/cameo-motion/v3/cameo-chart-run/data/data.csv"
+        meta="/cameo-motion/v3/cameo-chart-run/data/meta.csv">
+      </cameo-chart-run>
+    </div>
+  </div>
+</div>
+<!--<script src="../../../../cameo-motion/v3/cameo-chart-run/js/cameo-chart-run2.js" type="module"></script>-->
+<!--<cameo-debug></cameo-debug>-->
+</body>
+</html>
+

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>app-cameo-run</title>
+    <meta charset="utf-8"/>
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/scss/style.css"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator_midnight.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+    <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
+    <style>
+        /*Theme the Tabulator element*/
+        #example-table-theme {
+            background-color: #ccc;
+            border: 1px solid #333;
+            border-radius: 10px;
+        }
+
+        /*Theme the header*/
+        #example-table-theme .tabulator-header {
+            background-color: #333;
+            color: #fff;
+        }
+
+        /*Allow column header names to wrap lines*/
+        #example-table-theme .tabulator-header .tabulator-col,
+        #example-table-theme .tabulator-header .tabulator-col-row-handle {
+            white-space: normal;
+        }
+
+        /*Color the table rows*/
+        #example-table-theme .tabulator-tableHolder .tabulator-table .tabulator-row {
+            color: #fff;
+            background-color: #666;
+        }
+
+        /*Color even rows*/
+        #example-table-theme .tabulator-tableHolder .tabulator-table .tabulator-row:nth-child(even) {
+            background-color: #444;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="container">
+    <div class="row pb-5 pt-5">
+        <div class="col-md-8 pt-5 my-auto">
+            <cameo-run data="data/data.csv" meta="data/meta.csv"></cameo-run>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="mt-1 mb-1 d-flex justify-content-end">
+        <button class="btn btn-secondary btn-sm mr-2"id="file-load-trigger">Open File</button>
+        <button class="btn btn-secondary btn-sm mr-2" id="add-row">Add Row</button>
+        <button class="btn btn-secondary btn-sm mr-2" id="del-row">Remove Row "Oli Bob"</button>
+        <button class="btn btn-secondary btn-sm mr-2" id="clear">Empty the table</button>
+        <button class="btn btn-secondary btn-sm mr-2" id="reset">Reset</button>
+        <button class="btn btn-secondary btn-sm mr-2" id="download-csv">Download CSV</button>
+        <button class="btn btn-secondary btn-sm mr-2" id="download-xlsx">Download XLSX</button>
+    </div>
+    <div class="mb-2" id="example-table-theme"></div>
+</div>
+
+<script>
+    //trigger download of data.csv file
+    document.getElementById("download-csv").addEventListener("click", function () {
+        table.download("csv", "data.csv");
+    });
+    //trigger download of data.xlsx file
+    document.getElementById("download-xlsx").addEventListener("click", function () {
+        table.download("xlsx", "data.xlsx", {sheetName: "My Data"});
+    });
+</script>
+<script>
+    //define data array
+    var tabledata = [
+        {name:"機械設備", value:"25.9"},
+        {name:"交通運輸工具", value:"26.4"},
+        {name:"電力設備", value:"28.1"},
+        {name:"塑像膠與非金屬礦物製品", value:"30.1"},
+        {name:"其他製品與機器修配", value:"31.6"},
+        {name:"電腦電子及光學製品(含零組件)", value:"39.3"},
+        // {id: 1, name: "Oli Bob", progress: 12, gender: "male", rating: 1, col: "red", dob: "19/02/1984", car: 1},
+        // {id: 2, name: "Mary May", progress: 1, gender: "female", rating: 2, col: "blue", dob: "14/05/1982", car: true},
+        // {id: 3, name: "Christine Lobowski", progress: 42, gender: "female", rating: 0, col: "green", dob: "22/05/1982", car: "true"},
+        // {id: 4, name: "Brendon Philips", progress: 100, gender: "male", rating: 1, col: "orange", dob: "01/08/1980"},
+        // {id: 5, name: "Margret Marmajuke", progress: 16, gender: "female", rating: 5, col: "yellow", dob: "31/01/1999"},
+        // {id: 6, name: "Frank Harbours", progress: 38, gender: "male", rating: 4, col: "red", dob: "12/05/1966", car: 1},
+    ];
+
+    var table = new Tabulator("#example-table-theme", {
+        data: tabledata,           //load row data from array
+        clipboard:true,
+        clipboardPasteAction:"replace",
+        layout: "fitColumns",      //fit columns to width of table
+        autoColumns:true,
+        placeholder:"Awaiting Data, Please Load File",
+        responsiveLayout: "hide",  //hide columns that dont fit on the table
+        tooltips: true,            //show tool tips on cells
+        addRowPos: "bottom",          //when adding a new row, add it to the top of the table
+        history: true,             //allow undo and redo actions on the table
+        // pagination: "local",       //paginate the data
+        // paginationSize: 999,         //allow 7 rows per page of data
+        movableColumns: true,      //allow column order to be changed
+        movableRows: true,
+        resizableRows: true,       //allow row order to be changed
+        initialSort: [             //set the initial sort order of the data
+            {column: "name", dir: "asc"},
+        ],
+        columns: [                 //define the table columns
+            // {rowHandle: true, formatter: "handle", headerSort: false, frozen: true, width: 30, minWidth: 30},
+            {title: "name", field: "name", editor: "input"},
+            {title: "value", field: "value", editor: "input"},
+            // {title: "Gender", field: "gender", width: 95, editor: "select", editorParams: {values: ["male", "female"]}},
+            // {title: "Rating", field: "rating", formatter: "star", hozAlign: "center", width: 100, editor: true},
+            // {title: "Color", field: "col", width: 130, editor: "input"},
+            // {title: "Date Of Birth", field: "dob", width: 130, sorter: "date", hozAlign: "center"},
+            // {title: "Driver", field: "car", width: 90, hozAlign: "center", formatter: "tickCross", sorter: "boolean", editor: true},
+        ],
+    });
+    //trigger AJAX load on "Load Data via AJAX" button click
+    document.getElementById("file-load-trigger").addEventListener("click", function(){
+        table.setDataFromLocalFile();
+    });
+
+    //Add row on "Add Row" button click
+    document.getElementById("add-row").addEventListener("click", function () {
+        table.addRow({});
+    });
+
+    //Delete row on "Delete Row" button click
+    document.getElementById("del-row").addEventListener("click", function () {
+        table.deleteRow(1);
+    });
+
+    //Clear table on "Empty the table" button click
+    document.getElementById("clear").addEventListener("click", function () {
+        table.clearData()
+    });
+
+    //Reset table contents on "Reset the table" button click
+    document.getElementById("reset").addEventListener("click", function () {
+        table.setData(tabledata);
+    });
+</script>
+
+<script src="/cdn.amcharts.com/lib/4/core.js"></script>
+<script src="/cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="/cdn.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="/www.amcharts.com/lib/4/plugins/timeline.js"></script>
+<script src="/www.amcharts.com/lib/4/plugins/bullets.js"></script>
+<script src="/cameo-motion/lib/v2/cameo-am-element.js" type="module"></script>
+<script src="/cameo-motion/lib/v2/cameo-clean.js" type="module"></script>
+<script src="/cameo-motion/lib/v2/cameo-run.js" type="module"></script>
+
+</body>
+</html>

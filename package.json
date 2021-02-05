@@ -1,0 +1,25 @@
+{
+  "name": "cameo-motion",
+  "version": "1.0.0",
+  "description": "想要測試Vercel 0201",
+  "main": "cameo-chart-run.html",
+  "scripts": {
+    "start": "parcel ./cameo-motion/v3/cameo-chart-run/html/cameo-chart-run.html --open",
+    "build": "parcel build ./cameo-motion/v3/cameo-chart-run/html/cameo-chart-run.html --experimental-scope-hoisting"
+  },
+  "browserslist": [
+    "last 1 Chrome versions"
+  ],
+  "dependencies": {
+    "@amcharts/amcharts4": "^4.10.13",
+    "@amcharts/amcharts4-fonts": "^4.0.1",
+    "@amcharts/amcharts4-geodata": "^4.1.19",
+    "tabulator-tables": "^4.9.3"
+  },
+  "devDependencies": {
+    "@babel/core": "7.12.10",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-static-files-copy": "^2.5.1"
+  },
+  "keywords": []
+}

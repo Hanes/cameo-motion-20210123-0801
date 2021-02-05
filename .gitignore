@@ -1,0 +1,17 @@
+.vscode/settings.json
+dist/
+dist/*
+
+sh/etc_skel/.env
+sh/etc_skel/.user-env 
+node_modules/
+
+package-lock.json
+
+jupyterhub_cookie_secret
+secrets/*
+.DS_Store
+/dist/
+
+.cache
+.codesandbox
